@@ -9,7 +9,7 @@ class Game:
     SCREEN_SIZE = 600
     WHITE = (255, 255, 255)
     CELLCOLOR = (50, 50, 255)
-    CELLNUM = 50 # number of cells in row
+    CELLNUM = 5 # number of cells in row
 
     def __init__(self):
         self.running = True
@@ -17,12 +17,13 @@ class Game:
         pygame.display.set_caption('GAME OF LIFE')
 
         self.clock = None
-        self.gap = 10
+        self.gap = 5
         self.containerSize = Game.SCREEN_SIZE - self.gap * 2
 
         self.cells = Cells(Game.CELLNUM, Game.CELLCOLOR, self.screen, self.gap, self.containerSize)
 
         self.cells.draw_first_cells()
+        self.cells.calc()
         self.loop()
 
     def update(self):
