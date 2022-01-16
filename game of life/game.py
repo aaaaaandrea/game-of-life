@@ -8,8 +8,9 @@ class Game:
 
     SCREEN_SIZE = 600
     WHITE = (255, 255, 255)
-    CELLCOLOR = (50, 50, 255)
-    CELLNUM = 5 # number of cells in row
+    CELLCOLOR = (255, 255, 255)
+    CELLNUM = 50  # number of cells in row
+    REFRESH = 4  # speed of changing cells
 
     def __init__(self):
         self.running = True
@@ -17,22 +18,22 @@ class Game:
         pygame.display.set_caption('GAME OF LIFE')
 
         self.clock = None
-        self.gap = 5
+        self.gap = 5  # gap between end of screen and frame
         self.containerSize = Game.SCREEN_SIZE - self.gap * 2
 
         self.cells = Cells(Game.CELLNUM, Game.CELLCOLOR, self.screen, self.gap, self.containerSize)
 
         self.cells.draw_first_cells()
-        self.cells.calc()
         self.loop()
 
     def update(self):
-        # draws frame
+        # draws frame/container
         pygame.draw.rect(self.screen, Game.WHITE,
                          pygame.Rect(self.gap, self.gap, self.containerSize, self.containerSize), 2)
 
+        self.cells.calc()
         pygame.display.flip()
-        self.clock.tick(2)
+        self.clock.tick(Game.REFRESH)
 
     def loop(self):
         self.clock = pygame.time.Clock()
