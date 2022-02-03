@@ -13,6 +13,8 @@ class Cells:
         self.gap = gap
         self.cell_size = (container_size - 2) / cell_num
 
+    # ------------------------------------------------------------------------------------------------------
+
     def draw_first_cells(self):
         for row in range(self.cell_num):
             # print(row)
@@ -25,6 +27,21 @@ class Cells:
                          self.cell_size - 1,
                          self.cell_size - 1))
 
+    # ------------------------------------------------------------------------------------------------------
+
+    def draw_file_cells(self, fileMAP):
+        self.cellMAP = fileMAP
+        for row in range(self.cell_num):
+            for column in range(self.cell_num):
+                if self.cellMAP[column][row] == 1:
+                    pygame.draw.rect(
+                        self.screen, self.color,
+                        (self.gap + 1 + (self.cell_size * row) + 1, self.gap + 1 + (self.cell_size * column) + 1,
+                         self.cell_size - 1,
+                         self.cell_size - 1))
+
+    # ------------------------------------------------------------------------------------------------------
+
     def calc(self):
         for row in range(self.cell_num):
             for column in range(self.cell_num):
@@ -33,8 +50,14 @@ class Cells:
                 # rules
                 self.check_rules(alive, self.cellMAP[row][column], row, column)
 
+        print(self.helpMAP)
+        print(self.cellMAP)
         self.cellMAP = self.helpMAP
+        print(self.cellMAP)
         self.draw_another_gen()
+
+    # ------------------------------------------------------------------------------------------------------
+    # checks position of the cell an live neighbours
 
     def check_others(self, check_row, check_column):
         live = 0
@@ -59,9 +82,12 @@ class Cells:
                     valid_neighbour = False
 
                 if valid_neighbour:
-                    live += self.cellMAP[neighbour_row][neighbour_column]
-        # print(live)
+                    live += round(self.cellMAP[neighbour_row][neighbour_column])
+
         return live
+
+    # ------------------------------------------------------------------------------------------------------
+    # resolves game of life rules
 
     def check_rules(self, alive, cell, row, column):
         # 1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -88,6 +114,9 @@ class Cells:
             self.helpMAP[row, column] = 1
         else:
             print('wtf stala se chyba')
+
+    # ------------------------------------------------------------------------------------------------------
+    # redraws new generation
 
     def draw_another_gen(self):
         for row in range(self.cell_num):
